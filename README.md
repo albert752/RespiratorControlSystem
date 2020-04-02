@@ -1,13 +1,13 @@
 # Respirator Monitor System 
 Respirator Monitor System (BCS) is a software aimed to the RPM and pressure
-parameters of a breather. It offers a web interface as well as a REST API in
+parameters of a respirator. It offers a web interface as well as a REST API in
 order to receive the information of the device.
 
 ## Config file reference
 This is an example of the config file:
 
 ```
-[Breather]
+[Respirator]
 ID = 123
 LOC = SF45
 POLL_FREQ = 1
@@ -22,9 +22,9 @@ MIN_PRESSURE = 45
 MAX_PRESSURE = 55
 ```
 
-* **ID:** Indicates the identification number of the breather.
-* **LOC:** Indicates the localization of the breather.
-* **POLL_FREQ:** Breathers control poll frequency.
+* **ID:** Indicates the identification number of the respirator.
+* **LOC:** Indicates the localization of the respirator.
+* **POLL_FREQ:** Respirators control poll frequency.
 * **STARTUP_TIME:** Minimum time to gather samples before monitoring.
 * **MIN_RPM_MOTOR:** Minimum operating RPM.
 * **MAX_RPM_MOTOR:** Maximum operating RPM.
@@ -33,7 +33,7 @@ MAX_PRESSURE = 55
 
 
 ## API Reference
-In order to retrieve the information of the breather the api link is the
+In order to retrieve the information of the respirator the api link is the
 following:
 
 ```
@@ -53,11 +53,11 @@ Here there is an example of the output:
 }
 ```
 
-* **id:** Identification number of the breather.
-* **loc:** Localization of the breather.
-* **pressure:** Pressure of the breather.
-* **rpm:** RPMs of the breather.
-* **status:** Status of the breather.
+* **id:** Identification number of the respirator.
+* **loc:** Localization of the respirator.
+* **pressure:** Pressure of the respirator.
+* **rpm:** RPMs of the respirator.
+* **status:** Status of the respirator.
 
 ## Authors
 * **Albert Azemar i Rovira** - *Initial work* - [albert752](https://github.com/albert752)
