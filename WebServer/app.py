@@ -1,8 +1,17 @@
 from flask import Flask, render_template, request, jsonify
 from utils.breather import Breather
+import configparser
+
+config = configparser.ConfigParser()
+config.read("config.conf")
+
+
+
+ID = config.get('Breather', 'ID')
+LOC = config.get('Breather', 'LOC')
 
 app = Flask(__name__)
-breather = Breather("123", "SF34")
+breather = Breather(ID, LOC)
 
 @app.route("/")
 def home():

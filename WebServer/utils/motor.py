@@ -17,7 +17,6 @@ class Motor():
     def __init__(self):
         self.raw = []
         self.startup = time()
-        self.status = 'off'
         ## SIMULATION ONLY ##
         def run():
             for i in range(60):
@@ -43,18 +42,27 @@ class Motor():
         """
         try:
             now = time()
+
+            # If the startup time has not been consumed, return -1
             if now - self.startup < STARTUP_TIME:
                 return -1
+
+            # Remove old samples out of the one minute window
             while now - self.raw[0] > 60.0:
                 self.raw.pop(0)     
+
+            # Count the number of interrupts and divided it by the time diff
+            # between the first sample of the window and the current time
             interrupts = len(self.raw)
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
+
         except:
-            self.status = 'fail'
+            # Any error will trigger the fail state, return -2
             return -2
 
 
+# Little script to test
 if __name__ == "__main__":
     motor = Motor()
     print("*** DEBUGGING MODE FOR MOTOR ***")
