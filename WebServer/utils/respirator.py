@@ -25,21 +25,18 @@ class Respirator(threading.Thread):
         Tries to initialize all the respirator parameters, if not able, raises the
         alarm.
         """
-        try:
-            threading.Thread.__init__(self, daemon=True)
-            self.motor = Motor()
-            self.ID = ID
-            self.loc = loc
-            self.info = {"rpm": self.motor.get_rpm(),
-                        "pressure": 55,
-                        "id": self.ID,
-                        "loc": self.loc,
-                        "status": "off"
-                        }
-            self.buzz = AudioSegment.from_mp3("utils/buzz.mp3")
-            self.alarm = False
-        except:
-            self._raise_the_alarm()
+        self.alarm = False
+        threading.Thread.__init__(self, daemon=True)
+        self.motor = Motor()
+        self.ID = ID
+        self.loc = loc
+        self.info = {"rpm": self.motor.get_rpm(),
+                    "pressure": 55,
+                    "id": self.ID,
+                    "loc": self.loc,
+                    "status": "off"
+                    }
+        self.buzz = AudioSegment.from_mp3("utils/buzz.mp3")
 
     def run(self):
         """
@@ -91,7 +88,8 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run():
             while True:
-                play(self.buzz)
+                #play(self.buzz)
+                print("ALARMA")
                 sleep(0.5)
 
         if not self.alarm:

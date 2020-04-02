@@ -28,4 +28,4 @@ if __name__ == "__main__":
     print("starting")
     respirator.start()
     print("hello")
-    app.run(host="localhost", port=80, debug=True)
+    app.run(host="0.0.0.0", port=8000, debug=True)
