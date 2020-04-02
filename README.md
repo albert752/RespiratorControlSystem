@@ -6,7 +6,7 @@ order to receive the information of the device.
 ## Config file reference
 This is an example of the config file:
 
-"""
+```
 [Breather]
 ID = 123
 LOC = SF45
@@ -20,7 +20,7 @@ MAX_RPM_MOTOR = 45
 [Preasure]
 MIN_PRESSURE = 45
 MAX_PRESSURE = 55
-"""
+```
 
 * **ID:** Indicates the identification number of the breather.
 * **LOC:** Indicates the localization of the breather.
@@ -36,13 +36,13 @@ MAX_PRESSURE = 55
 In order to retrieve the information of the breather the api link is the
 following:
 
-"""
+```
 http://example.com/api/info
-"""
+```
 
 Here there is an example of the output:
 
-"""
+```
 {
   "id": "123",
   "loc": "SF34",
@@ -51,7 +51,7 @@ Here there is an example of the output:
   "status": "on"
 
 }
-"""
+```
 
 * **id:** Identification number of the breather.
 * **loc:** Localization of the breather.
