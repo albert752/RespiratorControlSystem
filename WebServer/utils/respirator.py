@@ -15,14 +15,14 @@ MIN_RPM_MOTOR = int(config.get('Motor', 'MIN_RPM_MOTOR'))
 MAX_RPM_MOTOR = int(config.get('Motor', 'MAX_RPM_MOTOR'))
 MIN_PREASURE = int(config.get('Pressure', 'MIN_PRESSURE'))
 MAX_PREASURE = int(config.get('Pressure', 'MAX_PRESSURE'))
-POLL_FREQ = int(config.get('Breather', 'POLL_FREQ'))
+POLL_FREQ = int(config.get('Respirator', 'POLL_FREQ'))
 
 
-class Breather(threading.Thread):
+class Respirator(threading.Thread):
 
     def __init__(self, ID, loc):
         """
-        Tries to initialize all the breather parameters, if not able, raises the
+        Tries to initialize all the respirator parameters, if not able, raises the
         alarm.
         """
         try:
@@ -101,7 +101,7 @@ class Breather(threading.Thread):
 
     def get_info(self):
         """
-        Returns the current info of the breather
+        Returns the current info of the respirator
         :retuns: self.info
         """
         return self.info
@@ -109,8 +109,8 @@ class Breather(threading.Thread):
 
 # Little script to test
 if __name__ == "__main__":
-    breather = Breather(1234, 123)
-    breather.start()
+    respirator = Respirator(1234, 123)
+    respirator.start()
     while True:
-        pp(breather.info)
+        pp(respirator.info)
         sleep(2)
