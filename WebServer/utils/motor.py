@@ -8,9 +8,9 @@ import random
 import threading
 ## END SYMULATION  ##
 
+# CONFIGURATION VARIABLES
 config = configparser.ConfigParser()
 config.read("config.conf")
-
 STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
@@ -18,8 +18,9 @@ class Motor():
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
         motor_pin = 11 # G17
-        GPIO.setup([motor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(motor_pin, GPIO.BOTH, handle)
+        GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
+
         # Inner variable configuration
         self.raw = []
         self.startup = time()
@@ -37,7 +38,7 @@ class Motor():
         # threading.Thread(target=run, daemon=True).start()
         ## END SYMULATION  ##
     
-    def handle(self):
+    def on_sensor(self):
         self.raw.append(time())
 
     def get_rpm(self):
@@ -60,7 +61,7 @@ class Motor():
 
             # Count the number of interrupts and divided it by the time diff
             # between the first sample of the window and the current time
-            interrupts = len(self.raw)
+            interrupts = len(self.raw)/2
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
 
