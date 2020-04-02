@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container pt-5">
+  <div class="card " style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title"><strong>Respirador {{ id }}</strong></h5>
+      <p class="card-text">Localización: {{ loc }}</p>
+    </div>
+    <ul class="list-group list-group-flush">
+      {% if status == "on" %}
+      <li class="list-group-item text-success"><strong>En funcionamiento<strong></li>
+      {% elif status == "off" %}
+      <li class="list-group-item text-warning"><strong>Arrancando monitorización<strong></li>
+      {% else %}
+      <li class="list-group-item text-danger"><strong>NO FUNCIONA<strong></li>
+      {% endif %}
+      <li class="list-group-item">RPMs: {{ rpm }}</li>
+      <li class="list-group-item">Presión: {{ preasure }}</li>
+    </ul>
+    <div class="card-body">
+      <a href="/" class="card-link">Actualizar</a>
+      <a href="#" class="card-link">Another link</a>
+    </div>
+  </div>
+</div>
+  {% endblock %}
