@@ -1,12 +1,17 @@
 from time import sleep, time
 from collections import deque
 from pprint import pprint as pp
+import configparser
+
 ## SIMULATION ONLY ##
 import random
 import threading
 ## END SYMULATION  ##
 
-STARTUP_TIME = 10
+config = configparser.ConfigParser()
+config.read("config.conf")
+
+STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
     def __init__(self):
@@ -15,21 +20,18 @@ class Motor():
         self.status = 'off'
         ## SIMULATION ONLY ##
         def run():
+            for i in range(60):
+                self.handle()
+                sleep(random.uniform(1.4, 1.6))
+            sleep(15)
             while True:
                 self.handle()
                 sleep(random.uniform(1.4, 1.6))
+
         threading.Thread(target=run, daemon=True).start()
         ## END SYMULATION  ##
     
-    def _get_data(self):
-        ## SIMULATION ONLY ##
-        return random.choices(population=[1, 0], weights=[4/6, 2/6], k=1)[0]
-        ## END SYMULATION  ##
-
     def handle(self):
-        ## SIMULATION ONLY ##
-        value = self._get_data()
-        ## END SYMULATION  ##
         self.raw.append(time())
 
     def get_rpm(self):

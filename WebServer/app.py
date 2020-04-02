@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from motor import Motor
-from breather import Breather
+from utils.breather import Breather
 
 app = Flask(__name__)
 breather = Breather("123", "SF34")
@@ -12,10 +11,12 @@ def home():
 @app.route("/api/<param>")
 def rest_api(param):
     if param == "status":
-        return jsonify(context)
+        return jsonify(breather.get_info())
     else:
         return "Wrong api command"
 
 if __name__ == "__main__":
+    print("starting")
     breather.start()
+    print("hello")
     app.run(host="localhost", port=80, debug=True)
