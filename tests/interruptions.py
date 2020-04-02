@@ -12,10 +12,14 @@ GPIO.setup([BTN_G], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 #GPIO.add_event_detect(BTN_B, GPIO.RISING, lambda pin: GPIO.output(LED_B, False))
 #GPIO.add_event_detect(BTN_B, GPIO.FALLING, lambda pin: GPIO.output(LED_B, True))
 
-def handle(pin):
-    print("Dectected!")
+i = 0
 
-GPIO.add_event_detect(BTN_G, GPIO.BOTH, handle)
+def handle(pin):
+    global i
+    print(i)
+    i += 1
+
+GPIO.add_event_detect(BTN_G, GPIO.RISING, handle)
 
 while True:
     pass
