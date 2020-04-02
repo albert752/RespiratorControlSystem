@@ -6,7 +6,6 @@ GPIO.setmode(GPIO.BOARD)
 
 BTN_G = 11 # G17
 
-GPIO.setwarnings(False) # because I'm using the pins for other things too!
 GPIO.setup([BTN_G], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 # can't add separate callbacks for both rising and falling

@@ -15,19 +15,26 @@ STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
     def __init__(self):
+        # GPIO configuration
+        GPIO.setmode(GPIO.BOARD)
+        motor_pin = 11 # G17
+        GPIO.setup([motor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(motor_pin, GPIO.BOTH, handle)
+        # Inner variable configuration
         self.raw = []
         self.startup = time()
-        ## SIMULATION ONLY ##
-        def run():
-            for i in range(60):
-                self.handle()
-                sleep(random.uniform(1.4, 1.6))
-            sleep(15)
-            while True:
-                self.handle()
-                sleep(random.uniform(1.4, 1.6))
 
-        threading.Thread(target=run, daemon=True).start()
+        ## SIMULATION ONLY ##
+        # def run():
+            # for i in range(60):
+                # self.handle()
+                # sleep(random.uniform(1.4, 1.6))
+            # sleep(15)
+            # while True:
+                # self.handle()
+                # sleep(random.uniform(1.4, 1.6))
+
+        # threading.Thread(target=run, daemon=True).start()
         ## END SYMULATION  ##
     
     def handle(self):
