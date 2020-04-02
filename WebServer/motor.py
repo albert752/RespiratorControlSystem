@@ -1,46 +1,66 @@
-import threading
-from time import sleep
+from time import sleep, time
 from collections import deque
+from pprint import pprint as pp
 ## SIMULATION ONLY ##
 import random
+import threading
 ## END SYMULATION  ##
 
-class Motor(threading.Thread):
-    def __init__(self, poll_rate):
-        threading.Thread.__init__(self, daemon=True)
-        self.poll_rate = poll_rate
-        self.raw = deque([], maxlen=poll_rate*60)
+STARTUP_TIME = 10
 
-    def run(self):
-        while True:
-            self.raw.append(self._get_data())
-            sleep(1/self.poll_rate)
-
+class Motor():
+    def __init__(self):
+        self.raw = []
+        self.startup = time()
+        self.status = 'off'
+        ## SIMULATION ONLY ##
+        def run():
+            while True:
+                self.handle()
+                sleep(random.uniform(1.4, 1.6))
+        threading.Thread(target=run, daemon=True).start()
+        ## END SYMULATION  ##
+    
     def _get_data(self):
         ## SIMULATION ONLY ##
         return random.choices(population=[1, 0], weights=[4/6, 2/6], k=1)[0]
         ## END SYMULATION  ##
 
+    def handle(self):
+        ## SIMULATION ONLY ##
+        value = self._get_data()
+        ## END SYMULATION  ##
+        self.raw.append(time())
+
     def get_rpm(self):
         """
-        Return the current rpm value or -1 if there is not enough data
+        Returns the current RPM value of the motor. 
+        :return: -1 if the motor is starting up
+                 -2 if there is an internal error
+                 positive float representing the RPM value
         """
-        if len(self.raw) < 60*self.poll_rate:
-            return len(self.raw) - 60
-        else:
-            rpm = sum(self.raw) / self.poll_rate
-            return rpm
+        try:
+            now = time()
+            if now - self.startup < STARTUP_TIME:
+                return -1
+            while now - self.raw[0] > 60.0:
+                self.raw.pop(0)     
+            interrupts = len(self.raw)
+            time_diff = (now - self.raw[0])/60
+            return interrupts/time_diff
+        except:
+            self.status = 'fail'
+            return -2
+
 
 if __name__ == "__main__":
-    motor = Motor(1)
-    motor.start()
-    print("hello")
+    motor = Motor()
+    print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
-        if rpm == -1:
-            print("Not enough data")
-        else:
-            print(f"The rpms are {rpm}")
-        print(f"DEBUG:\n\telems: {len(motor.raw)}\n\traw: {motor.raw}")
+        print(f"\nThe rpms are {rpm}")
+        print(f"DEBUG:\n\telems: {len(motor.raw)}\n")
+        print(f"\traw:\n\t\t0: {motor.raw[0]}\n\t\t-1:{motor.raw[-1]}")
+        print(f"\t\tdiff:{time() - motor.raw[0]} ")
         sleep(2)
 
