@@ -88,8 +88,7 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run():
             while True:
-                #play(self.buzz)
-                print("ALARMA")
+                play(self.buzz)
                 sleep(0.5)
 
         if not self.alarm:
