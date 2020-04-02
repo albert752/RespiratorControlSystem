@@ -1,5 +1,5 @@
-# Breather Monitor System
-Breather Monitor System (BCS) is a software aimed to the RPM and pressure
+# Respirator Monitor System 
+Respirator Monitor System (BCS) is a software aimed to the RPM and pressure
 parameters of a breather. It offers a web interface as well as a REST API in
 order to receive the information of the device.
 
