@@ -72,7 +72,8 @@ Here there is an example of the output:
 * **loc:** Localization of the respirator.
 * **pressure:** Pressure of the respirator.
 * **rpm:** RPMs of the respirator.
-* **status:** Status of the respirator. Can be `off` when setting up, `on` when
+* **status:** Status of the respirator. Can be `off` when nothing has been received,
+  , `cal` when it receives the first sample and suring the set up interval, `on` when
   functioning correctly or `fail` in case of faliure.
 
 ## Authors
