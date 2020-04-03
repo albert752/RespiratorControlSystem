@@ -4,7 +4,7 @@ import threading
 
 GPIO.setmode(GPIO.BOARD)
 
-BTN_G = 11 # G17
+BTN_G = 13 # G17
 
 GPIO.setup([BTN_G], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 

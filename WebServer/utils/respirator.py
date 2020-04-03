@@ -26,7 +26,7 @@ class Respirator(threading.Thread):
         alarm.
         """
         threading.Thread.__init__(self, daemon=True)
-        self.motor = Motor(debug=True)
+        self.motor = Motor(debug=False)
         self.ID = ID
         self.loc = loc
         self.info = {"rpm": self.motor.get_rpm(),
@@ -54,38 +54,41 @@ class Respirator(threading.Thread):
         code, raises the alarm.
         """
         while True:
-            # Check if if there has been an interrupt during the last 6s
-            now = time()
             last = self.motor.get_last_sample()
-            if now - last > MAX_DIFF_SAMPLES:
-                self._raise_the_alarm("No new samples, motor stopped")
-            
-            # Check the current RPMs
-            self.info["rpm"] = self.motor.get_rpm()
-
-            # The -2 value of rpm means internal error of the motor module
-            if self.info["rpm"] == -2:
-                self._raise_the_alarm("Internal motor monitor system error")
-
-            # The -1 value of rpm means that the motor does not have enough
-            # samples yet
-            elif self.info["rpm"] == -1 and self.info["status"] == "off":
-                self.info["status"] = "off"
-
-            # If the value is positive 
-            if self.info["rpm"] > 0:  
+            if last != None:
+                if self.info['status'] == 'off':
+                    self.info['status'] = 'cal'
+                # Check if if there has been an interrupt during the last 6s
+                now = time()
+                if now - last > MAX_DIFF_SAMPLES:
+                    self._raise_the_alarm("No new samples, motor stopped")
                 
-                # Check if rpm is in range of the operational parameters 
-                if self.info["rpm"] < MIN_RPM_MOTOR or self.info["rpm"] > MAX_RPM_MOTOR:
-                    self._raise_the_alarm("RPMs out of bounds")
+                # Check the current RPMs
+                self.info["rpm"] = self.motor.get_rpm()
 
-                # If a value is received and status was off, turn on
-                elif self.info["status"] == "off":
-                    self.info["status"] = "on"
+                # The -2 value of rpm means internal error of the motor module
+                if self.info["rpm"] == -2:
+                    self._raise_the_alarm("Internal motor monitor system error")
 
-            # If the status was on, a negative value indicates an error
-            elif self.info["status"] == "on":
-                self._raise_the_alarm("RPMs are negative")
+                # The -1 value of rpm means that the motor does not have enough
+                # samples yet
+                elif self.info["rpm"] == -1 and self.info["status"] == "off":
+                    self.info["status"] = "off"
+
+                # If the value is positive 
+                if self.info["rpm"] > 0:  
+                    
+                    # Check if rpm is in range of the operational parameters 
+                    if self.info["rpm"] < MIN_RPM_MOTOR or self.info["rpm"] > MAX_RPM_MOTOR:
+                        self._raise_the_alarm("RPMs out of bounds")
+
+                    # If a value is received and status was off, turn on
+                    elif self.info["status"] == "cal":
+                        self.info["status"] = "on"
+
+                # If the status was on, a negative value indicates an error
+                elif self.info["status"] == "on":
+                    self._raise_the_alarm("RPMs are negative")
             
             # Wait to continue polling
             sleep(POLL_FREQ)
@@ -125,5 +128,5 @@ if __name__ == "__main__":
     respirator = Respirator(1234, 123)
     respirator.start()
     while True:
-        pp(respirator.info)
+        pp(respirator.get_info())
         sleep(1)

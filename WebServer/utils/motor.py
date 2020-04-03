@@ -2,7 +2,7 @@ from time import sleep, time
 from collections import deque
 from pprint import pprint as pp
 import configparser
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 ## SIMULATION ONLY ##
 import threading
@@ -17,10 +17,10 @@ STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 class Motor():
     def __init__(self, debug=False):
         # GPIO configuration
-        # GPIO.setmode(GPIO.BOARD)
-        # motor_pin = 11 # G17
-        # GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        # GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
+        GPIO.setmode(GPIO.BOARD)
+        sensor_pin = 11 # G17
+        GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
 
         # Inner variable configuration
         self.raw = []
@@ -43,7 +43,10 @@ class Motor():
         self.raw.append(time())
 
     def get_last_sample(self):
-        return self.raw[-1]
+        try:
+            return self.raw[-1]
+        except:
+            return None
 
     def get_rpm(self):
         """
@@ -76,13 +79,16 @@ class Motor():
 
 # Little script to test
 if __name__ == "__main__":
-    motor = Motor(debug=True)
+    motor = Motor(debug=False)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
         print(f"\nThe rpms are {rpm}")
         print(f"DEBUG:\n\telems: {len(motor.raw)}\n")
-        print(f"\traw:\n\t\t0: {motor.raw[0]}\n\t\t-1:{motor.raw[-1]}")
-        print(f"\t\tdiff:{time() - motor.raw[0]} ")
+        try:
+            print(f"\traw:\n\t\t0: {motor.raw[0]}\n\t\t-1:{motor.raw[-1]}")
+            print(f"\t\tdiff:{time() - motor.raw[0]} ")
+        except:
+            print("No samples yet")
         sleep(2)
 
