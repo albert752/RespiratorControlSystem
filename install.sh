@@ -12,5 +12,5 @@ pip3  install pydub
 apt install rpi.gpio
 
 apt install apache2 -y
-apt-get install libapache2-mod-wsgi python-dev -y
+apt-get install libapache2-mod-wsgi python-dev python3-dev -y
 a2enmod wsgi
