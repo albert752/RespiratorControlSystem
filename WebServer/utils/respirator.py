@@ -106,8 +106,8 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run(alarm):
             while alarm():
-                # play(self.buzz)
-                print(f"!!! The alarm has been triggered: {cause}, {alarm()}")
+                play(self.buzz)
+                print(f"!!! The alarm has been triggered: {cause}")
                 sleep(0.5)
 
         if self.alarm == None:
