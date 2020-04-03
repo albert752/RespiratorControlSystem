@@ -10,7 +10,9 @@ alert the user.
 
 The following events will trigger the alarm (by order of priority):
     1. If in a time difference of MAX_DIFF_SAMPLES no new interruptions are
-       triggered. It means that the motor has stopped.
+       triggered. It means that the motor has stopped. It is important to set up
+        this value taking into account the worst case scenario which corresponds to the
+        cicle duration in MIN_RPM_MOTOR.
     2. If the motor module reports an rpm value of -2. This value represents an
        internal error.
     3. If the RPM value is not in the range of [MIN_RPM_MOTOR, MAX_RPM_MOTOR]
@@ -43,7 +45,7 @@ MAX_DIFF_SAMPLES = 6
 * **MIN_RPM_MOTOR:** Minimum operating RPM.
 * **MAX_RPM_MOTOR:** Maximum operating RPM.
 * **MAX_DIFF_SAMPLES:** Maximum time difference between two consecutive samples.
-    It is adviced to use the MIN_RPM_MOTOR cicle time to take into account the
+    It is adviced to use the MIN_RPM_MOTOR cicle duration to take into account the
     worst case scenario.
 
 
