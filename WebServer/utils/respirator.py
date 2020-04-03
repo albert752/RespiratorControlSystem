@@ -38,6 +38,7 @@ class Respirator(threading.Thread):
                     }
         self.buzz = AudioSegment.from_mp3("utils/buzz.mp3")
 
+
     def run(self):
         """
         Main controll loop and target of the thread, every POLL_FREQ reuests the

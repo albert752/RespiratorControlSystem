@@ -14,7 +14,7 @@ config.read("config.conf")
 STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
-    def __init__(self):
+    def __init__(self, debug):
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
         motor_pin = 11 # G17
@@ -25,20 +25,16 @@ class Motor():
         self.raw = []
         self.startup = time()
 
-        ## SIMULATION ONLY ##
-        # def run():
-            # for i in range(60):
-                # self.handle()
-                # sleep(random.uniform(1.4, 1.6))
-            # sleep(15)
-            # while True:
-                # self.handle()
-                # sleep(random.uniform(1.4, 1.6))
-
-        # threading.Thread(target=run, daemon=True).start()
-        ## END SYMULATION  ##
-    
-    def on_sensor(self):
+        # Debugging
+        if debug:
+            def run():
+                for i in range(60):
+                    self.on_sensor()
+                    sleep(1.5)
+                while True: pass
+            threading.Thread(target=run).start()
+   
+    def on_sensor(self, pin):
         self.raw.append(time())
 
     def get_rpm(self):
