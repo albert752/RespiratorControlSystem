@@ -4,38 +4,45 @@ from pprint import pprint as pp
 import configparser
 
 ## SIMULATION ONLY ##
-import random
 import threading
+import random
 ## END SYMULATION  ##
 
-# CONFIGURATION VARIABLES
+# CONFIGURATION CONSTANTS
 config = configparser.ConfigParser()
 config.read("config.conf")
 STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
-    def __init__(self, debug):
+    def __init__(self, debug=False):
         # GPIO configuration
-        GPIO.setmode(GPIO.BOARD)
-        motor_pin = 11 # G17
-        GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
+        # GPIO.setmode(GPIO.BOARD)
+        # motor_pin = 11 # G17
+        # GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        # GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
 
         # Inner variable configuration
         self.raw = []
         self.startup = time()
 
         # Debugging
+        # Runs at 30RPM duging 80s, then stops
         if debug:
             def run():
-                for i in range(60):
-                    self.on_sensor()
+                for i in range(40):
+                    self.on_sensor(17)
+                    sleep(0.5)
+                    self.on_sensor(17)
                     sleep(1.5)
+
                 while True: pass
             threading.Thread(target=run).start()
    
     def on_sensor(self, pin):
         self.raw.append(time())
+
+    def get_last_sample(self):
+        return self.raw[-1]
 
     def get_rpm(self):
         """
@@ -68,7 +75,7 @@ class Motor():
 
 # Little script to test
 if __name__ == "__main__":
-    motor = Motor()
+    motor = Motor(debug=True)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
