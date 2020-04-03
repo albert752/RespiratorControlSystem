@@ -54,7 +54,7 @@ In order to retrieve the information of the respirator the api link is the
 following:
 
 ```
-http://example.com/api/info
+http://example.com/
 ```
 
 Here there is an example of the output:

@@ -14,18 +14,9 @@ app = Flask(__name__)
 respirator = Respirator(ID, LOC)
 
 @app.route("/")
-def home():
-    return render_template('respirator.html', **respirator.get_info())
-
-@app.route("/api/<param>")
 def rest_api(param):
-    if param == "status":
-        return jsonify(respirator.get_info())
-    else:
-        return "Wrong api command"
+    return jsonify(respirator.get_info())
 
 if __name__ == "__main__":
-    print("starting")
     respirator.start()
-    print("hello")
     app.run(host="0.0.0.0", port=8000, debug=True)
