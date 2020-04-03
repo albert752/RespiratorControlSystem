@@ -1,7 +1,24 @@
 # Respirator Monitor System 
-Respirator Monitor System (BCS) is a software aimed to the RPM and pressure
+Respirator Monitor System (RMS) is a software aimed to the RPM and pressure
 parameters of a respirator. It offers a web interface as well as a REST API in
 order to receive the information of the device.
+
+## Introduction
+The RMS will be connected to a magnetic switch on the respirators arm to monitor
+its movement as well as report the RPMs. The RMS is equiped with an alarm to
+alert the user.
+
+The following events will trigger the alarm (by order of priority):
+    1. If in a time difference of MAX_DIFF_SAMPLES no new interruptions are
+       triggered. It means that the motor has stopped.
+    2. If the motor module reports an rpm value of -2. This value represents an
+       internal error.
+    3. If the RPM value is not in the range of [MIN_RPM_MOTOR, MAX_RPM_MOTOR]
+    4. Any other error with the reading of the RPM value 
+
+## Features
+- [x] Motor monitor
+- [ ] Pressure sensor monito
 
 ## Config file reference
 This is an example of the config file:
@@ -14,12 +31,9 @@ POLL_FREQ = 1
 
 [Motor]
 STARTUP_TIME = 60
-MIN_RPM_MOTOR = 35
-MAX_RPM_MOTOR = 45
-
-[Preasure]
-MIN_PRESSURE = 45
-MAX_PRESSURE = 55
+MIN_RPM_MOTOR = 10
+MAX_RPM_MOTOR = 40
+MAX_DIFF_SAMPLES = 6
 ```
 
 * **ID:** Indicates the identification number of the respirator.
@@ -28,8 +42,9 @@ MAX_PRESSURE = 55
 * **STARTUP_TIME:** Minimum time to gather samples before monitoring.
 * **MIN_RPM_MOTOR:** Minimum operating RPM.
 * **MAX_RPM_MOTOR:** Maximum operating RPM.
-* **MIN_PRESSURE:** Minimum operating pressure.
-* **MAX_PRESSURE:** Maximim operating pressure.
+* **MAX_DIFF_SAMPLES:** Maximum time difference between two consecutive samples.
+    It is adviced to use the MIN_RPM_MOTOR cicle time to take into account the
+    worst case scenario.
 
 
 ## API Reference
@@ -46,10 +61,8 @@ Here there is an example of the output:
 {
   "id": "123",
   "loc": "SF34",
-  "pressure": 55,
   "rpm": 40,
   "status": "on"
-
 }
 ```
 
@@ -57,7 +70,8 @@ Here there is an example of the output:
 * **loc:** Localization of the respirator.
 * **pressure:** Pressure of the respirator.
 * **rpm:** RPMs of the respirator.
-* **status:** Status of the respirator.
+* **status:** Status of the respirator. Can be `off` when setting up, `on` when
+  functioning correctly or `fail` in case of faliure.
 
 ## Authors
 * **Albert Azemar i Rovira** - *Initial work* - [albert752](https://github.com/albert752)
