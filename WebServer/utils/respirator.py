@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import os
 from .motor import Motor
 import threading

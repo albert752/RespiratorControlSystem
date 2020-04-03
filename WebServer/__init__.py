@@ -1,10 +1,11 @@
+#!/usr/bin/python3
+
 from flask import Flask, render_template, request, jsonify
-from utils.respirator import Respirator
+from .utils.respirator import Respirator
 import configparser
 import os
-DIR = os.getcwd() + "/WebServer/"
 
-print(DIR + "config.conf")
+DIR = os.getcwd() + "/WebServer/"
 
 config = configparser.ConfigParser()
 config.read(DIR + "/config.conf")
@@ -21,4 +22,4 @@ def rest_api(param):
 
 if __name__ == "__main__":
     respirator.start()
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run()
