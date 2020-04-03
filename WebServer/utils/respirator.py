@@ -1,4 +1,4 @@
-from motor import Motor
+from .motor import Motor
 import threading
 from time import sleep, time
 import configparser

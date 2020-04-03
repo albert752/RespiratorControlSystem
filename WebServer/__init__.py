@@ -13,7 +13,7 @@ LOC = config.get('Respirator', 'LOC')
 app = Flask(__name__)
 respirator = Respirator(ID, LOC)
 
-@app.route("/")
+@app.route("/api/<param>")
 def rest_api(param):
     return jsonify(respirator.get_info())
 
