@@ -4,6 +4,7 @@ from time import sleep, time
 import configparser
 from pydub import AudioSegment
 from pydub.playback import play
+import RPi.GPIO as GPIO
 
 from pprint import pprint as pp
 
@@ -24,7 +25,6 @@ class Respirator(threading.Thread):
         Tries to initialize all the respirator parameters, if not able, raises the
         alarm.
         """
-        self.alarm = False
         threading.Thread.__init__(self, daemon=True)
         self.motor = Motor(debug=True)
         self.ID = ID
@@ -34,7 +34,14 @@ class Respirator(threading.Thread):
                     "loc": self.loc,
                     "status": "off"
                     }
+        self.alarm = None
         self.buzz = AudioSegment.from_mp3("utils/buzz.mp3")
+
+        # GPIO configuration
+        GPIO.setmode(GPIO.BOARD)
+        button_pin = 13 # G27 7th pin interior row
+        GPIO.setup([button_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.add_event_detect(button_pin, GPIO.RISING, self._on_button)
 
 
     def run(self):
@@ -83,22 +90,28 @@ class Respirator(threading.Thread):
             # Wait to continue polling
             sleep(POLL_FREQ)
 
+    def _get_alarm(self):
+        return self.alarm
+
+    def _on_button(self, pin):
+        self.alarm = False
+
     def _raise_the_alarm(self, cause):
         """
         Creates a new thread that reproduces a buzzer sound every 0.5 seconds
         """
         self.info["status"] = "fail"
-        def run():
-            while True:
+        def run(alarm):
+            while alarm():
                 # play(self.buzz)
-                print(f"!!! The alarm has been triggered: {cause}")
+                print(f"!!! The alarm has been triggered: {cause}, {alarm()}")
                 sleep(0.5)
 
-        if self.alarm == False:
-            self.alarm = threading.Thread(target=run, daemon=True)
-            self.alarm.start()
+        if self.alarm == None:
+            self.alarm = True
+            threading.Thread(target=run, args=(lambda: self.alarm, ),  daemon=True).start()
             
-
+    
     def get_info(self):
         """
         Returns the current info of the respirator

@@ -2,6 +2,7 @@ from time import sleep, time
 from collections import deque
 from pprint import pprint as pp
 import configparser
+#import RPi.GPIO as GPIO
 
 ## SIMULATION ONLY ##
 import threading
