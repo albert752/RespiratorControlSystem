@@ -3,7 +3,9 @@ from collections import deque
 from pprint import pprint as pp
 import configparser
 import RPi.GPIO as GPIO
+import os
 
+DIR = os.getcwd() + "/WebServer/"
 ## SIMULATION ONLY ##
 import threading
 import random
@@ -11,7 +13,7 @@ import random
 
 # CONFIGURATION CONSTANTS
 config = configparser.ConfigParser()
-config.read("config.conf")
+config.read(DIR + "config.conf")
 STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():

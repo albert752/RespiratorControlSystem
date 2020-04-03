@@ -1,3 +1,4 @@
+import os
 from .motor import Motor
 import threading
 from time import sleep, time
@@ -8,9 +9,11 @@ import RPi.GPIO as GPIO
 
 from pprint import pprint as pp
 
+DIR = os.getcwd() + "/WebServer/"
+
 # CONFIGURATION CONSTANTS
 config = configparser.ConfigParser()
-config.read("config.conf")
+config.read(DIR + "config.conf")
 
 MIN_RPM_MOTOR = int(config.get('Motor', 'MIN_RPM_MOTOR'))
 MAX_RPM_MOTOR = int(config.get('Motor', 'MAX_RPM_MOTOR'))
@@ -35,7 +38,7 @@ class Respirator(threading.Thread):
                     "status": "off"
                     }
         self.alarm = None
-        self.buzz = AudioSegment.from_mp3("utils/buzz.mp3")
+        self.buzz = AudioSegment.from_mp3(DIR + "/utils/buzz.mp3")
 
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)

@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 from utils.respirator import Respirator
 import configparser
+import os
+DIR = os.getcwd() + "/WebServer/"
+
+print(DIR + "config.conf")
 
 config = configparser.ConfigParser()
-config.read("config.conf")
-
-
+config.read(DIR + "/config.conf")
 
 ID = config.get('Respirator', 'ID')
 LOC = config.get('Respirator', 'LOC')
