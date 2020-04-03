@@ -2,36 +2,48 @@ from time import sleep, time
 from collections import deque
 from pprint import pprint as pp
 import configparser
+#import RPi.GPIO as GPIO
 
 ## SIMULATION ONLY ##
-import random
 import threading
+import random
 ## END SYMULATION  ##
 
+# CONFIGURATION CONSTANTS
 config = configparser.ConfigParser()
 config.read("config.conf")
-
 STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
 
 class Motor():
-    def __init__(self):
+    def __init__(self, debug=False):
+        # GPIO configuration
+        # GPIO.setmode(GPIO.BOARD)
+        # motor_pin = 11 # G17
+        # GPIO.setup([sensor_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        # GPIO.add_event_detect(sensor_pin, GPIO.RISING, self.on_sensor)
+
+        # Inner variable configuration
         self.raw = []
         self.startup = time()
-        ## SIMULATION ONLY ##
-        def run():
-            for i in range(60):
-                self.handle()
-                sleep(random.uniform(1.4, 1.6))
-            sleep(15)
-            while True:
-                self.handle()
-                sleep(random.uniform(1.4, 1.6))
 
-        threading.Thread(target=run, daemon=True).start()
-        ## END SYMULATION  ##
-    
-    def handle(self):
+        # Debugging
+        # Runs at 30RPM duging 80s, then stops
+        if debug:
+            def run():
+                for i in range(40):
+                    self.on_sensor(17)
+                    sleep(0.5)
+                    self.on_sensor(17)
+                    sleep(1.5)
+
+                while True: pass
+            threading.Thread(target=run).start()
+   
+    def on_sensor(self, pin):
         self.raw.append(time())
+
+    def get_last_sample(self):
+        return self.raw[-1]
 
     def get_rpm(self):
         """
@@ -53,7 +65,7 @@ class Motor():
 
             # Count the number of interrupts and divided it by the time diff
             # between the first sample of the window and the current time
-            interrupts = len(self.raw)
+            interrupts = len(self.raw)/2
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
 
@@ -64,7 +76,7 @@ class Motor():
 
 # Little script to test
 if __name__ == "__main__":
-    motor = Motor()
+    motor = Motor(debug=True)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
