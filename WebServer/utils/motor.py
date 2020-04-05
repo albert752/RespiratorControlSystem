@@ -11,7 +11,7 @@ import random
 ## END SYMULATION  ##
 
 class Motor():
-    def __init__(self, debug=False, config):
+    def __init__(self, config, debug=False):
 
         # Gather the configuration
         self.config = config
@@ -69,7 +69,7 @@ class Motor():
             now = time()
 
             # If the startup time has not been consumed, return -1
-            if now - self.startup < STARTUP_TIME:
+            if now - self.startup < self.config['Motor']['STARTUP_TIME']:
                 return -1
 
             # Remove old samples out of the one minute window
@@ -83,7 +83,7 @@ class Motor():
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
 
-        except:
+        except Exception as e:
             # Any error will trigger the fail state, return -2
             return -2
 
@@ -94,16 +94,16 @@ if __name__ == "__main__":
             "Respirator": {
                 "ID": "123",
                 "LOC": "SF45",
-                "POLL_FREQ": "1"
+                "POLL_FREQ": 1
             },
             "Motor":{
-                "STARTUP_TIME": "60",
-                "MIN_RPM_MOTOR": "10",
-                "MAX_RPM_MOTOR": "40",
-                "MAX_DIFF_SAMPLES": "6"
+                "STARTUP_TIME": 60,
+                "MIN_RPM_MOTOR": 10,
+                "MAX_RPM_MOTOR": 40,
+                "MAX_DIFF_SAMPLES": 6
             }
         }    
-    motor = Motor(debug=True, config)
+    motor = Motor(config, debug=False)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()

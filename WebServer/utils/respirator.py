@@ -16,7 +16,7 @@ class Respirator(threading.Thread):
         """
         threading.Thread.__init__(self, daemon=True)
         self.config = config
-        self.motor = Motor(debug=False, self.config)
+        self.motor = Motor(self.config, debug=False)
         self.info = {"rpm": self.motor.get_rpm(),
                     "id": self.config['Respirator']['ID'],
                     "loc": self.config['Respirator']['ID'],
@@ -47,7 +47,7 @@ class Respirator(threading.Thread):
                     self.info['status'] = 'cal'
                 # Check if if there has been an interrupt during the last 6s
                 now = time()
-                if now - last > config['Motor']['MAX_DIFF_SAMPLES']:
+                if now - last > self.config['Motor']['MAX_DIFF_SAMPLES']:
                     self._raise_the_alarm("No new samples, motor stopped")
                 
                 # Check the current RPMs
@@ -66,8 +66,8 @@ class Respirator(threading.Thread):
                 if self.info["rpm"] > 0:  
                     
                     # Check if rpm is in range of the operational parameters 
-                    if self.info["rpm"] < config['Motor']['MIN_RPM_MOTOR'] 
-                    or self.info["rpm"] > config['Motor']['MAX_RPM_MOTOR']:
+                    if self.info["rpm"] < self.config['Motor']['MIN_RPM_MOTOR'] \
+                    or self.info["rpm"] > self.config['Motor']['MAX_RPM_MOTOR']:
                         self._raise_the_alarm("RPMs out of bounds")
 
                     # If a value is received and status was off, turn on
@@ -79,7 +79,7 @@ class Respirator(threading.Thread):
                     self._raise_the_alarm("RPMs are negative")
             
             # Wait to continue polling
-            sleep(config['Respirator']['POLL_FREQ'])
+            sleep(self.config['Respirator']['POLL_FREQ'])
 
     def _get_alarm(self):
         return self.alarm
@@ -116,13 +116,13 @@ if __name__ == "__main__":
             "Respirator": {
                 "ID": "123",
                 "LOC": "SF45",
-                "POLL_FREQ": "1"
+                "POLL_FREQ": 1
             },
             "Motor":{
-                "STARTUP_TIME": "60",
-                "MIN_RPM_MOTOR": "10",
-                "MAX_RPM_MOTOR": "40",
-                "MAX_DIFF_SAMPLES": "6"
+                "STARTUP_TIME": 60,
+                "MIN_RPM_MOTOR": 10,
+                "MAX_RPM_MOTOR": 40,
+                "MAX_DIFF_SAMPLES": 6
             }
         }
 

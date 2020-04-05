@@ -2,12 +2,10 @@
 
 from flask import Flask, render_template, request, jsonify
 from utils.respirator import Respirator
-from config import get_config
-import configparser
 import os
 
 config = {  
-            "Breather": {
+            "Respirator": {
                 "ID": "123",
                 "LOC": "SF45",
                 "POLL_FREQ": 1
@@ -29,4 +27,4 @@ def rest_api():
 
 if __name__ == "__main__":
     respirator.start()
-    app.run()
+    app.run(host='0.0.0.0', port=8000)
