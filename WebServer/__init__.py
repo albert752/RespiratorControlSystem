@@ -1,17 +1,12 @@
 #!/usr/bin/python3
 
 from flask import Flask, render_template, request, jsonify
-from .utils.respirator import Respirator
+from utils.respirator import Respirator
 import configparser
 import os
 
-DIR = os.getcwd() + "/WebServer/"
-
-config = configparser.ConfigParser()
-config.read(DIR + "/config.conf")
-
-ID = config.get('Respirator', 'ID')
-LOC = config.get('Respirator', 'LOC')
+ID = 123
+LOC = "Hab 123"
 
 app = Flask(__name__)
 respirator = Respirator(ID, LOC)

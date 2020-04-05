@@ -11,17 +11,11 @@ import RPi.GPIO as GPIO
 
 from pprint import pprint as pp
 
-DIR = os.getcwd() + "/WebServer/"
-
 # CONFIGURATION CONSTANTS
-config = configparser.ConfigParser()
-config.read(DIR + "config.conf")
-
-MIN_RPM_MOTOR = int(config.get('Motor', 'MIN_RPM_MOTOR'))
-MAX_RPM_MOTOR = int(config.get('Motor', 'MAX_RPM_MOTOR'))
-MAX_DIFF_SAMPLES = int(config.get('Motor', 'MAX_DIFF_SAMPLES'))
-POLL_FREQ = int(config.get('Respirator', 'POLL_FREQ'))
-
+MIN_RPM_MOTOR = 10
+MAX_RPM_MOTOR = 40
+MAX_DIFF_SAMPLES = 6
+POLL_FREQ = 1
 
 class Respirator(threading.Thread):
 
@@ -40,7 +34,7 @@ class Respirator(threading.Thread):
                     "status": "off"
                     }
         self.alarm = None
-        self.buzz = AudioSegment.from_mp3(DIR + "/utils/buzz.mp3")
+        # self.buzz = AudioSegment.from_mp3(DIR + "utils/buzz.mp3")
 
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
@@ -111,7 +105,7 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run(alarm):
             while alarm():
-                play(self.buzz)
+                #play(self.buzz)
                 print(f"!!! The alarm has been triggered: {cause}")
                 sleep(0.5)
 

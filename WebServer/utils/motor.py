@@ -1,22 +1,17 @@
 #!/usr/bin/python3
 
 from time import sleep, time
-from collections import deque
 from pprint import pprint as pp
-import configparser
 import RPi.GPIO as GPIO
 import os
 
-DIR = os.getcwd() + "/WebServer/"
 ## SIMULATION ONLY ##
 import threading
 import random
 ## END SYMULATION  ##
 
 # CONFIGURATION CONSTANTS
-config = configparser.ConfigParser()
-config.read(DIR + "config.conf")
-STARTUP_TIME = int(config.get('Motor', 'STARTUP_TIME'))
+STARTUP_TIME = 60
 
 class Motor():
     def __init__(self, debug=False):
