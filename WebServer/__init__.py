@@ -17,8 +17,8 @@ config = {
                 "MAX_DIFF_SAMPLES": 6
             }
         }
-respirator.start()
 respirator = Respirator(config)
+respirator.start()
 
 app = Flask(__name__)
 
