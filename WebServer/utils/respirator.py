@@ -109,6 +109,9 @@ class Respirator(threading.Thread):
         """
         return self.info
 
+    def set_loc(self, loc):
+        self.info['loc'] = loc
+
 
 # Little script to test
 if __name__ == "__main__":

@@ -23,8 +23,16 @@ respirator.start()
 app = Flask(__name__)
 
 @app.route("/api/status")
-def rest_api():
+def status():
     return jsonify(respirator.get_info())
 
+@app.route("/api/loc", methods=['POST'])
+def location():
+    try:
+        respirator.set_loc(request.json['loc'])
+        info = respirator.get_info()
+    except:
+        info = {"error": "Location not changed"}
+    return jsonify(info)
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000)
