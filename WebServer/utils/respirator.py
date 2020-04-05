@@ -1,40 +1,28 @@
 #!/usr/bin/python3
 
-import os
 from .motor import Motor
 import threading
 from time import sleep, time
-import configparser
-from pydub import AudioSegment
-from pydub.playback import play
 import RPi.GPIO as GPIO
-
 from pprint import pprint as pp
 
-# CONFIGURATION CONSTANTS
-MIN_RPM_MOTOR = 10
-MAX_RPM_MOTOR = 40
-MAX_DIFF_SAMPLES = 6
-POLL_FREQ = 1
 
 class Respirator(threading.Thread):
 
-    def __init__(self, ID, loc):
+    def __init__(self, config):
         """
         Tries to initialize all the respirator parameters, if not able, raises the
         alarm.
         """
         threading.Thread.__init__(self, daemon=True)
-        self.motor = Motor(debug=False)
-        self.ID = ID
-        self.loc = loc
+        self.config = config
+        self.motor = Motor(debug=False, self.config)
         self.info = {"rpm": self.motor.get_rpm(),
-                    "id": self.ID,
-                    "loc": self.loc,
+                    "id": self.config['Respirator']['ID'],
+                    "loc": self.config['Respirator']['ID'],
                     "status": "off"
                     }
         self.alarm = None
-        # self.buzz = AudioSegment.from_mp3(DIR + "utils/buzz.mp3")
 
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
@@ -59,7 +47,7 @@ class Respirator(threading.Thread):
                     self.info['status'] = 'cal'
                 # Check if if there has been an interrupt during the last 6s
                 now = time()
-                if now - last > MAX_DIFF_SAMPLES:
+                if now - last > config['Motor']['MAX_DIFF_SAMPLES']:
                     self._raise_the_alarm("No new samples, motor stopped")
                 
                 # Check the current RPMs
@@ -78,7 +66,8 @@ class Respirator(threading.Thread):
                 if self.info["rpm"] > 0:  
                     
                     # Check if rpm is in range of the operational parameters 
-                    if self.info["rpm"] < MIN_RPM_MOTOR or self.info["rpm"] > MAX_RPM_MOTOR:
+                    if self.info["rpm"] < config['Motor']['MIN_RPM_MOTOR'] 
+                    or self.info["rpm"] > config['Motor']['MAX_RPM_MOTOR']:
                         self._raise_the_alarm("RPMs out of bounds")
 
                     # If a value is received and status was off, turn on
@@ -90,7 +79,7 @@ class Respirator(threading.Thread):
                     self._raise_the_alarm("RPMs are negative")
             
             # Wait to continue polling
-            sleep(POLL_FREQ)
+            sleep(config['Respirator']['POLL_FREQ'])
 
     def _get_alarm(self):
         return self.alarm
@@ -105,7 +94,6 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run(alarm):
             while alarm():
-                #play(self.buzz)
                 print(f"!!! The alarm has been triggered: {cause}")
                 sleep(0.5)
 
@@ -124,7 +112,21 @@ class Respirator(threading.Thread):
 
 # Little script to test
 if __name__ == "__main__":
-    respirator = Respirator(1234, 123)
+    config = {  
+            "Respirator": {
+                "ID": "123",
+                "LOC": "SF45",
+                "POLL_FREQ": "1"
+            },
+            "Motor":{
+                "STARTUP_TIME": "60",
+                "MIN_RPM_MOTOR": "10",
+                "MAX_RPM_MOTOR": "40",
+                "MAX_DIFF_SAMPLES": "6"
+            }
+        }
+
+    respirator = Respirator(config)
     respirator.start()
     while True:
         pp(respirator.get_info())

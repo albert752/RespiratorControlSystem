@@ -10,11 +10,12 @@ import threading
 import random
 ## END SYMULATION  ##
 
-# CONFIGURATION CONSTANTS
-STARTUP_TIME = 60
-
 class Motor():
-    def __init__(self, debug=False):
+    def __init__(self, debug=False, config):
+
+        # Gather the configuration
+        self.config = config
+
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
         sensor_pin = 11 # G17
@@ -23,7 +24,7 @@ class Motor():
 
         # Inner variable configuration
         self.raw = []
-        self.startup = time()
+        self.startup = None
 
         # Debugging
         # Runs at 30RPM duging 80s, then stops
@@ -39,6 +40,12 @@ class Motor():
             threading.Thread(target=run).start()
    
     def on_sensor(self, pin):
+        """
+        Handler for the reed switch. It adds the timestamp of the interruption
+        to the raw list. If its the first sample, it  changes the startup time.
+        """
+        if len(self.raw) == 0 and self.startup == None: 
+            self.startup = time()
         self.raw.append(time())
 
     def get_last_sample(self):
@@ -52,9 +59,13 @@ class Motor():
         Returns the current RPM value of the motor. 
         :return: -1 if the motor is starting up
                  -2 if there is an internal error
+                  0 if the motor is off
                  positive float representing the RPM value
         """
         try:
+            if len(self.raw) == 0:
+                return 0
+                
             now = time()
 
             # If the startup time has not been consumed, return -1
@@ -67,6 +78,7 @@ class Motor():
 
             # Count the number of interrupts and divided it by the time diff
             # between the first sample of the window and the current time
+            # Each pair of interrupts represents one respiration
             interrupts = len(self.raw)/2
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
@@ -78,7 +90,7 @@ class Motor():
 
 # Little script to test
 if __name__ == "__main__":
-    motor = Motor(debug=False)
+    motor = Motor(debug=True)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
