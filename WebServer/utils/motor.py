@@ -90,7 +90,20 @@ class Motor():
 
 # Little script to test
 if __name__ == "__main__":
-    motor = Motor(debug=True)
+    config = {  
+            "Respirator": {
+                "ID": "123",
+                "LOC": "SF45",
+                "POLL_FREQ": "1"
+            },
+            "Motor":{
+                "STARTUP_TIME": "60",
+                "MIN_RPM_MOTOR": "10",
+                "MAX_RPM_MOTOR": "40",
+                "MAX_DIFF_SAMPLES": "6"
+            }
+        }    
+    motor = Motor(debug=True, config)
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
