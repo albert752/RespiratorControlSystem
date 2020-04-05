@@ -30,7 +30,7 @@ sudo chown -R pi:pi /var/www/WebServer/venv
 echo "****** INSTALLING FLASK STEP 5/7 ******"
 # Activate the virtual enviroment and install flask
 . /var/www/WebServer/venv/bin/activate
-pip install flask
+pip3 install flask
 deactivate
 
 echo "****** APACHE2 CONFIGURATION STEP 6/7 ******"
