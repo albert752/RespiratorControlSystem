@@ -2,8 +2,8 @@
 
 # Update on the system
 echo "****** PERFORMING SYSTEM UPGRADE STEP 1/7 ******"
-apt update
-apt upgrade
+apt update -y
+apt upgrade -y
 
 echo "****** INSTALLING COMPONENTS STEP 2/7 ******"
 # Install the required components
@@ -42,7 +42,7 @@ a2dissite 000-default.conf
 echo "****** START SERVICE STEP 7/7 ******"
 # Restart apache2
 service apache2 stop
-sleep(1)
+sleep 1
 service apache2 start
 
 
