@@ -17,7 +17,7 @@ sudo apt install rpi.gpio -y
 
 echo "****** CLONING REPO STEP 3/7 ******"
 # Clone the repository
-git clone https://github.com/albert752/RespiratorControlSystem.git
+sudo git clone https://github.com/albert752/RespiratorControlSystem.git
 
 echo "****** COPY OF THE FILES STEP 4/7 ******"
 # Copy the WebServer files to the correct location
