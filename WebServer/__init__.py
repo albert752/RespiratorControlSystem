@@ -17,14 +17,14 @@ config = {
                 "MAX_DIFF_SAMPLES": 6
             }
         }
+respirator.start()
+respirator = Respirator(config)
 
 app = Flask(__name__)
-respirator = Respirator(config)
 
 @app.route("/api/status")
 def rest_api():
     return jsonify(respirator.get_info())
 
 if __name__ == "__main__":
-    respirator.start()
     app.run(host='0.0.0.0', port=8000)
