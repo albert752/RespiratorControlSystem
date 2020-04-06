@@ -24,7 +24,7 @@ The following events will trigger the alarm (by order of priority):
 - [ ] Pressure sensor monitor
 
 ## Installation
-1. Grab the image file from [here](https://mega.nz/file/vXwgXIQb)
+1. Grab the image file from [here](https://mega.nz/file/vXwgXIQb#S4T3hJtdADeEz3WXv6A6upX7s4XpX7BH9-kwiBpfT20)
 2. Flash the image to an SD card with Raspberry's utility
 3. Plug the SD card to the Raspberry and connect the alarm button to pin 13 and
    the motor sensor to pin 13. **Both of this components must be low level
