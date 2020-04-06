@@ -3,11 +3,12 @@
 from flask import Flask, render_template, request, jsonify
 from utils.respirator import Respirator
 import os
+from uuid import getnode
 
 config = {  
             "Respirator": {
-                "ID": "123",
-                "LOC": "SF45",
+                "ID": hex(getnode())[2:].upper()
+                "LOC": "Not set",
                 "POLL_FREQ": 1
             },
             "Motor": {
