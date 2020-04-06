@@ -25,8 +25,7 @@ The following events will trigger the alarm (by order of priority):
 
 ## Installation
 1. Grab the image file from [here](https://mega.nz/file/vXwgXIQb)
-2. Flash the image to an SD card with `Win32DiskImager` on Windows or `dd` on
-   Linux.
+2. Flash the image to an SD card with Raspberry's utility
 3. Plug the SD card to the Raspberry and connect the alarm button to pin 13 and
    the motor sensor to pin 13. **Both of this components must be low level
    active**.
