@@ -23,6 +23,20 @@ The following events will trigger the alarm (by order of priority):
 - [x] Motor monitor
 - [ ] Pressure sensor monitor
 
+## Installation
+1. Grab the image file from [here]()
+2. Flash the image to an SD card with `Win32DiskImager` on Windows or `dd` on
+   Linux.
+3. Plug the SD card to the Raspberry and connect the alarm button to pin 13 and
+   the motor sensor to pin 13. **Both of this components must be low level
+   active**.
+4. The current version does **not** have a configured WiFi network. In order
+   to enable wireless connection, first of all access to the terminal via `ssh`
+   with a wired connection or directly with the terminal. Run `sudo nano
+   /etc/wpa_supplicant/wpa_supplicant.conf` and field the `ssid` and `psk` fields.
+   Do not forget to include the surrounding "".
+5. Reboot the Raspberry and enjoy!
+
 ## Config reference
 This is an example of the config, it is changed at `__init__.py`:
 
