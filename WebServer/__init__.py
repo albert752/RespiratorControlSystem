@@ -7,7 +7,7 @@ from uuid import getnode
 
 config = {  
             "Respirator": {
-                "ID": hex(getnode())[2:].upper()
+                "ID": hex(getnode())[2:].upper(),
                 "LOC": "Not set",
                 "POLL_FREQ": 1
             },
