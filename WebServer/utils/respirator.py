@@ -27,7 +27,9 @@ class Respirator(threading.Thread):
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
         button_pin = 13 # G27 7th pin interior row
+        alarm_pin = 15 # G22 8th pin interior row
         GPIO.setup([button_pin], GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+        GPIO.setup(alarm_pin, GPIO.OUT)
         GPIO.add_event_detect(button_pin, GPIO.RISING, self._on_button)
 
 
@@ -94,9 +96,10 @@ class Respirator(threading.Thread):
         self.info["status"] = "fail"
         def run(alarm):
             while alarm():
-                print(f"!!! The alarm has been triggered: {cause}")
-                sleep(0.5)
-
+                GPIO.output(alarm_pin, GPIO.HIGH)
+                time.sleep(0.2)
+                GPIO.output(alarm_pin, GPIO.LOW)
+                time.sleep(0.2)
         if self.alarm == None:
             self.alarm = True
             threading.Thread(target=run, args=(lambda: self.alarm, ),  daemon=True).start()
