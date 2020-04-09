@@ -79,7 +79,7 @@ class Motor():
             # Count the number of interrupts and divided it by the time diff
             # between the first sample of the window and the current time
             # Each pair of interrupts represents one respiration
-            interrupts = len(self.raw)/2
+            interrupts = len(self.raw)
             time_diff = (now - self.raw[0])/60
             return interrupts/time_diff
 
