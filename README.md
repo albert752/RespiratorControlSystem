@@ -24,10 +24,12 @@ The following events will trigger the alarm (by order of priority):
 - [ ] Pressure sensor monitor
 
 ## Installation
-1. Grab the image file from [here](https://mega.nz/file/vXwgXIQb#S4T3hJtdADeEz3WXv6A6upX7s4XpX7BH9-kwiBpfT20)
+1. Grab the image file from
+   [here](https://mega.nz/file/eDghCIbY#elPPyVOzVf0YlKhLBqXKqvnkG8VyRzVBXsKK6Ezf8Mk)
 2. Flash the image to an SD card with Raspberry's utility
-3. Plug the SD card to the Raspberry and connect the alarm button to pin 13 and
-   the motor sensor to pin 13. **Both of this components must be low level
+3. Plug the SD card to the Raspberry and connect the alarm to pin 15, the stop
+   alarm button to pin 13 and
+   the motor sensor to pin 11. **Both of this last two components must be low level
    active**.
 4. The current version does **not** have a configured WiFi network. In order
    to enable wireless connection, first of all access to the terminal via `ssh`
