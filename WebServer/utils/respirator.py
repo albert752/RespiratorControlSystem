@@ -20,7 +20,7 @@ class Respirator(threading.Thread):
         self.motor = Motor(self.config, debug=False)
         self.info = {"rpm": self.motor.get_rpm(),
                     "id": self.config['Respirator']['ID'],
-                    "loc": self.config['Respirator']['ID'],
+                    "loc": self.config['Respirator']['LOC'],
                     "status": "off",
                     }
         self.alarm = {'status': 'off', 'last': None}
