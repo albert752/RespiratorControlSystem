@@ -44,9 +44,12 @@ class Motor():
         Handler for the reed switch. It adds the timestamp of the interruption
         to the raw list. If its the first sample, it  changes the startup time.
         """
+        print("Interrució")
         if len(self.raw) == 0 and self.startup == None: 
             self.startup = time()
-        self.raw.append(time())
+        if time() - self.get_last_sample() < 1:
+            print("**** VALIDA ****")
+            self.raw.append(time())
 
     def get_last_sample(self):
         try:
