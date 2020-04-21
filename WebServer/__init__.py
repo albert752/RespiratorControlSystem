@@ -31,10 +31,12 @@ app = Flask(__name__)
 cors = CORS(app)
 
 @app.route("/api/status")
+@cross_origin()
 def status():
     return jsonify(respirator.get_info())
 
 @app.route("/api/loc", methods=['POST'])
+@cross_origin()
 def location():
     try:
         respirator.set_loc(request.json['loc'])
