@@ -27,6 +27,7 @@ echo "****** INSTALLING FLASK STEP 5/7 ******"
 # Install flask
 pip3 install flask
 pip3 install rpi.gpio
+pip install flask-cors
 
 echo "****** APACHE2 CONFIGURATION STEP 6/7 ******"
 # Copy the apache2 configuration

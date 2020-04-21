@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 from utils.respirator import Respirator
 import os
 from uuid import getnode
@@ -27,6 +28,7 @@ respirator = Respirator(config)
 respirator.start()
 
 app = Flask(__name__)
+cors = CORS(app)
 
 @app.route("/api/status")
 def status():
