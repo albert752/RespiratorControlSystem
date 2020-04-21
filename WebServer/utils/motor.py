@@ -53,7 +53,7 @@ class Motor():
             self.startup = time()
             self.raw.append(time())
             print("**** Primera VALIDA ****")
-        elif time() - self.get_last_sample() > 1.7:
+        elif time() - self.get_last_sample() > 1:
             print(f"**** VALIDA {len(self.raw)} ****")
             self.raw.append(time())
 
