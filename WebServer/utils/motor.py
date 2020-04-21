@@ -45,10 +45,16 @@ class Motor():
         to the raw list. If its the first sample, it  changes the startup time.
         """
         print("Interrució")
+        try:
+            print(f"the time diff is {time()-self.get_last_sample()}")
+        except:
+            pass
         if len(self.raw) == 0 and self.startup == None: 
             self.startup = time()
-        if time() - self.get_last_sample() < 1:
-            print("**** VALIDA ****")
+            self.raw.append(time())
+            print("**** Primera VALIDA ****")
+        elif time() - self.get_last_sample() > 1.7:
+            print(f"**** VALIDA {len(self.raw)} ****")
             self.raw.append(time())
 
     def get_last_sample(self):
@@ -110,12 +116,12 @@ if __name__ == "__main__":
     print("*** DEBUGGING MODE FOR MOTOR ***")
     while True:
         rpm = motor.get_rpm()
-        print(f"\nThe rpms are {rpm}")
+        '''print(f"\nThe rpms are {rpm}")
         print(f"DEBUG:\n\telems: {len(motor.raw)}\n")
         try:
             print(f"\traw:\n\t\t0: {motor.raw[0]}\n\t\t-1:{motor.raw[-1]}")
             print(f"\t\tdiff:{time() - motor.raw[0]} ")
         except:
-            print("No samples yet")
+            print("No samples yet")'''
         sleep(2)
 
