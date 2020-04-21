@@ -36,7 +36,7 @@ def status():
 def location():
     try:
         respirator.set_loc(request.json['loc'])
-        with open('location.txt', 'w') as fp:
+        with open('/var/www/WebServer/location.txt', 'w') as fp:
             fp.write(request.json['loc'])
             fp.close()
         info = respirator.get_info()
