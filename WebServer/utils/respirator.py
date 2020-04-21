@@ -23,7 +23,7 @@ class Respirator(threading.Thread):
                     "loc": self.config['Respirator']['ID'],
                     "status": "off"
                     }
-        self.alarm = None
+        self.alarm = {'status': 'off', 'last': None}
 
         # GPIO configuration
         GPIO.setmode(GPIO.BOARD)
@@ -88,10 +88,10 @@ class Respirator(threading.Thread):
         return self.alarm
 
     def _on_button(self, pin):
-        if self.alarm == True:
-            self.alarm = False
-            sleep(3)
-        elif self.alarm == False:
+        if self.alarm['status'] == 'on':
+            self.alarm['status'] = 'silent'
+            self.alarm['time'] = time()
+        elif self.alarm['status'] == 'silent' and time() - self.alarm['time'] > 2:
             os.system("sudo reboot")
             
 
@@ -106,9 +106,9 @@ class Respirator(threading.Thread):
                 sleep(0.2)
                 GPIO.output(self.alarm_pin, GPIO.LOW)
                 sleep(0.2)
-        if self.alarm == None:
-            self.alarm = True
-            threading.Thread(target=run, args=(lambda: self.alarm, ),  daemon=True).start()
+        if self.alarm['status'] == 'off'
+            self.alarm['status'] = 'on'
+            threading.Thread(target=run, args=(lambda: self.alarm['status'] == 'on', ),  daemon=True).start()
             
     
     def get_info(self):
