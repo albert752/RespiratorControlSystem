@@ -116,7 +116,7 @@ class Respirator(threading.Thread):
         Returns the current info of the respirator
         :retuns: self.info
         """
-        self.info.update({'alarm', self.alarm['status']})
+        self.info.update({'alarm': self.alarm['status']})
         return self.info
 
     def set_loc(self, loc):
