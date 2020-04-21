@@ -21,7 +21,7 @@ class Respirator(threading.Thread):
         self.info = {"rpm": self.motor.get_rpm(),
                     "id": self.config['Respirator']['ID'],
                     "loc": self.config['Respirator']['ID'],
-                    "status": "off"
+                    "status": "off",
                     }
         self.alarm = {'status': 'off', 'last': None}
 
@@ -116,6 +116,7 @@ class Respirator(threading.Thread):
         Returns the current info of the respirator
         :retuns: self.info
         """
+        self.info.update({'alarm', self.alarm['status']})
         return self.info
 
     def set_loc(self, loc):
