@@ -106,7 +106,7 @@ class Respirator(threading.Thread):
                 sleep(0.2)
                 GPIO.output(self.alarm_pin, GPIO.LOW)
                 sleep(0.2)
-        if self.alarm['status'] == 'off'
+        if self.alarm['status'] == 'off':
             self.alarm['status'] = 'on'
             threading.Thread(target=run, args=(lambda: self.alarm['status'] == 'on', ),  daemon=True).start()
             
