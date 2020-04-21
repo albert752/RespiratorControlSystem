@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 
 from .motor import Motor
-import threading
+import threading, os
 from time import sleep, time
 import RPi.GPIO as GPIO
 from pprint import pprint as pp
+
 
 
 class Respirator(threading.Thread):
@@ -87,7 +88,11 @@ class Respirator(threading.Thread):
         return self.alarm
 
     def _on_button(self, pin):
-        self.alarm = False
+        if self.alarm == True:
+            self.alarm = False
+        elif self.alarm == False
+            os.system("sudo reboot")
+            
 
     def _raise_the_alarm(self, cause):
         """
