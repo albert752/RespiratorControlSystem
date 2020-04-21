@@ -90,7 +90,7 @@ class Respirator(threading.Thread):
     def _on_button(self, pin):
         if self.alarm == True:
             self.alarm = False
-        elif self.alarm == False
+        elif self.alarm == False:
             os.system("sudo reboot")
             
 
