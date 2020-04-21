@@ -5,10 +5,14 @@ from utils.respirator import Respirator
 import os
 from uuid import getnode
 
+with open('location.txt', 'r') as fp:
+    loc = fp.read().replace('\n', '')
+    fp.close()
+
 config = {  
             "Respirator": {
                 "ID": hex(getnode())[2:].upper(),
-                "LOC": "Not set",
+                "LOC":loc,
                 "POLL_FREQ": 1
             },
             "Motor": {
@@ -18,6 +22,7 @@ config = {
                 "MAX_DIFF_SAMPLES": 6
             }
         }
+
 respirator = Respirator(config)
 respirator.start()
 
@@ -31,6 +36,9 @@ def status():
 def location():
     try:
         respirator.set_loc(request.json['loc'])
+        with open('location.txt', 'w') as fp:
+            fp.write(request.json['loc'])
+            fp.close()
         info = respirator.get_info()
     except:
         info = {"error": "Location not changed"}
