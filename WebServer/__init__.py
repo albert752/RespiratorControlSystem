@@ -5,7 +5,7 @@ from utils.respirator import Respirator
 import os
 from uuid import getnode
 
-with open('location.txt', 'r') as fp:
+with open('/var/www/WebServer/location.txt', 'r') as fp:
     loc = fp.read().replace('\n', '')
     fp.close()
 
