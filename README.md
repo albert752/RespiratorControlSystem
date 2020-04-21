@@ -25,7 +25,7 @@ The following events will trigger the alarm (by order of priority):
 
 ## Installation
 1. Grab the image file from
-   [here](https://mega.nz/file/6KIlHaDA#lSJB0ZALbBQtYal7IH3ypSk27C-Q5Ufqdw_kqscVeyU)
+   [here](https://mega.nz/file/OCoi2KJQ#5QPcwwQ7kHRO4UQvvrv9-r9iO-63JqJFD4u9t3nogho)
 2. Flash the image to an SD card with Raspberry's utility
 3. Plug the SD card to the Raspberry and connect the alarm to pin 15, the stop
    alarm button to pin 13 and

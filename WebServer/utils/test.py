@@ -67,30 +67,26 @@ class Motor():
                   0 if the motor is off
                  positive float representing the RPM value
         """
-        try:
-            if len(self.raw) == 0:
-                return 0
-                
-            now = time()
+        if len(self.raw) == 0:
+            return 0
+            
+        now = time()
 
-            # If the startup time has not been consumed, return -1
-            if now - self.startup < self.config['Motor']['STARTUP_TIME']:
-                return -1
+        # If the startup time has not been consumed, return -1
+        if now - self.startup < self.config['Motor']['STARTUP_TIME']:
+            return -1
 
-            # Remove old samples out of the one minute window
-            while now - self.raw[0] > 60.0:
-                self.raw.pop(0)     
+        # Remove old samples out of the one minute window
+        while now - self.raw[0] > 60.0:
+            self.raw.pop(0)     
 
-            # Count the number of interrupts and divided it by the time diff
-            # between the first sample of the window and the current time
-            # Each pair of interrupts represents one respiration
-            interrupts = len(self.raw)
-            time_diff = (now - self.raw[0])/60
-            return interrupts/time_diff
+        # Count the number of interrupts and divided it by the time diff
+        # between the first sample of the window and the current time
+        # Each pair of interrupts represents one respiration
+        interrupts = len(self.raw)
+        time_diff = (now - self.raw[0])/60
+        return interrupts/time_diff
 
-        except Exception as e:
-            # Any error will trigger the fail state, return -2
-            return -2
 
 
 # Little script to test
